@@ -48,3 +48,4 @@ class Zone(dict):
 		_client.unlinkCampaign(self['zoneId'], campaign)
 	def generate_tags(self, code_type='adjs', params=[]):
 		return _client.generateTags(self['zoneId'], code_type, params)
+	generate_tag = generate_tags
