@@ -1,0 +1,7 @@
+You need to add the following setting to django:
+
+OPENX_URL = 'http://www.your-openx-server.tld/www/api/v1/xmlrpc/'
+OPENX_USERNAME = 'username'
+OPENX_PASSWORD = 'password'
+
+
