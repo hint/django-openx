@@ -1,6 +1,7 @@
 from client import OpenXClient
 
 _client = OpenXClient().banner
+_cache = {}
 
 class Banner(dict):
 	def __init__(self, data={}, **kwargs):
@@ -19,8 +20,10 @@ class Banner(dict):
 		if 'aImage' in self:
 			del self['aImage']
 	@staticmethod
-	def get(publisher_id):
-		return Banner(_client.getBanner(publisher_id))
+	def get(banner_id):
+		if not banner_id in _cache:
+			_cache[banner_id] = Banner(_client.getBanner(banner_id))
+		return _cache[banner_id]
 	@staticmethod
 	def get_for_campaign(campaign):
 		from campaign import Campaign
@@ -40,11 +43,13 @@ class Banner(dict):
 		if not isinstance(zone, Zone):
 			zone = Zone.get(zone)
 		return zone.link_banner(self)
+	linkZone = link_zone
 	def unlink_zone(self, zone):
 		from zone import Zone
 		if not isinstance(zone, Zone):
 			zone = Zone.get(zone)
 		return zone.unlink_banner(self)
+	unlinkZone = unlink_zone
 	def set_image_raw(self, filename, content, editswf=False):
 		import xmlrpclib
 		self['aImage'] = {

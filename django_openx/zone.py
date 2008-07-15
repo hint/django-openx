@@ -1,6 +1,7 @@
 from client import OpenXClient
 
 _client = OpenXClient().zone
+_cache = {}
 
 class Zone(dict):
 	def add(self):
@@ -10,8 +11,10 @@ class Zone(dict):
 	def modify(self):
 		_client.modifyZone(dict(self))
 	@staticmethod
-	def get(publisher_id):
-		return Zone(_client.getZone(publisher_id))
+	def get(zone_id):
+		if not zone_id in _cache:
+			_cache[zone_id] = Zone(_client.getZone(zone_id))
+		return _cache[zone_id]
 	@staticmethod
 	def get_for_publisher(publisher):
 		from publisher import Publisher
@@ -31,21 +34,26 @@ class Zone(dict):
 		if isinstance(banner, Banner):
 			banner = banner['bannerId']
 		_client.linkBanner(self['zoneId'], banner)
+	linkBanner = link_banner
 	def unlink_banner(self, banner):
 		from banner import Banner
 		if isinstance(banner, Banner):
 			banner = banner['bannerId']
 		_client.unlinkBanner(self['zoneId'], banner)
+	unlinkBanner = unlink_banner
 	def link_campaign(self, campaign):
 		from campaign import Campaign
 		if isinstance(campaign, Campaign):
 			campaign = campaign['campaignId']
 		_client.linkCampaign(self['zoneId'], campaign)
+	linkCampaign = link_campaign
 	def unlink_campaign(self, campaign):
 		from campaign import Campaign
 		if isinstance(campaign, Campaign):
 			campaign = campaign['campaignId']
 		_client.unlinkCampaign(self['zoneId'], campaign)
-	def generate_tags(self, code_type='adjs', params=[]):
+	unlinkCampaign = unlink_campaign
+	def generate_tag(self, code_type='adjs', params=[]):
 		return _client.generateTags(self['zoneId'], code_type, params)
-	generate_tag = generate_tags
+	generate_tags = generate_tag
+	generateTags = generate_tag

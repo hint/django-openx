@@ -1,6 +1,7 @@
 from client import OpenXClient
 
 _client = OpenXClient().publisher
+_cache = {}
 
 class Publisher(dict):
 	def add(self):
@@ -11,7 +12,9 @@ class Publisher(dict):
 		_client.modifyPublisher(dict(self))
 	@staticmethod
 	def get(publisher_id):
-		return Publisher(_client.getPublisher(publisher_id))
+		if not publisher_id in _cache:
+			_cache[publisher_id] = Publisher(_client.getPublisher(publisher_id))
+		return _cache[publisher_id]
 	@staticmethod
 	def get_for_agency(agency):
 		from agency import Agency
