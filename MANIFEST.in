@@ -1,0 +1,3 @@
+include README.txt
+include INSTALL.txt
+include ez_setup.py
