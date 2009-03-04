@@ -68,7 +68,27 @@ class Banner(OpenXObject):
 		fh.close()
 		self.set_image_raw(basename, content, editswf)
 	class Meta:
-		fields = ['aBackupImage', 'adserver', 'aImage', 'bannerId', 'bannerName', 'bannerText', 'block', 'campaignId', 'capping',
-			'comments', 'height', 'htmlTemplate', 'imageURL', 'sessionCapping', 'status', 'storageType', 'target', 'transparent',
-			'url', 'weight', 'width']
+		fields = {
+			'a_backup_image': 'aBackupImage',
+			'adserver': 'adserver',
+			'a_image': 'aImage',
+			'banner_id': 'bannerId',
+			'banner_name': 'bannerName',
+			'banner_text': 'bannerText',
+			'block': 'block',
+			'campaign_id': 'campaignId',
+			'capping': 'capping',
+			'comments': 'comments',
+			'height': 'height',
+			'html_template': 'htmlTemplate',
+			'image_url': 'imageURL',
+			'session_capping': 'sessionCapping',
+			'status': 'status',
+			'storage_type': 'storageType',
+			'target': 'target',
+			'transparent': 'transparent',
+			'url': 'url',
+			'weight': 'weight',
+			'width': 'width',
+		}
 

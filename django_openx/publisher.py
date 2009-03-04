@@ -35,5 +35,13 @@ class Publisher(OpenXObject):
 		from zone import Zone
 		return Zone.get_for_publisher(self)
 	class Meta:
-		fields = ['accountId', 'agencyId', 'comments', 'contactName', 'emailAddress', 'publisherId', 'publisherName']
+		fields = {
+			'account_id': 'accountId',
+			'agency_id': 'agencyId',
+			'comments': 'comments',
+			'contact_name': 'contactName',
+			'email_address': 'emailAddress',
+			'publisher_id': 'publisherId',
+			'publisher_name': 'publisherName',
+		}
 

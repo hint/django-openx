@@ -59,5 +59,16 @@ class Zone(OpenXObject):
 	generate_tags = generate_tag
 	generateTags = generate_tag
 	class Meta:
-		fields = ['block', 'capping', 'comments', 'height', 'publisherId', 'sessionCapping', 'type', 'width', 'zoneId', 'zoneName']
+		fields = {
+			'block': 'block',
+			'capping': 'capping',
+			'comments': 'comments',
+			'height': 'height',
+			'publisher_id': 'publisherId',
+			'session_capping': 'sessionCapping',
+			'type': 'type',
+			'width': 'width',
+			'zone_id': 'zoneId',
+			'zone_name': 'zoneName',
+		}
 

@@ -43,7 +43,24 @@ class Campaign(OpenXObject):
 		return zone.unlink_campaign(self)
 	unlinkZone = unlink_zone
 	class Meta:
-		fields = ['advertiserId', 'block', 'campaignId', 'campaignName', 'capping', 'clicks', 'comments',
-			'endDate', 'impressions', 'priority', 'revenue', 'revenueType', 'sessionCapping', 'startDate',
-			'targetClicks', 'targetConversions', 'targetImpressions', 'weight']
+		fields = {
+			'advertiser_id': 'advertiserId',
+			'block': 'block',
+			'campaign_id': 'campaignId',
+			'campaign_name': 'campaignName',
+			'capping': 'capping',
+			'clicks': 'clicks',
+			'comments': 'comments',
+			'end_date': 'endDate',
+			'impressions': 'impressions',
+			'priority': 'priority',
+			'revenue': 'revenue',
+			'revenue_type': 'revenueType',
+			'session_capping': 'sessionCapping',
+			'start_date': 'startDate',
+			'target_clicks': 'targetClicks',
+			'target_conversions': 'targetConversions',
+			'target_impressions': 'targetImpressions',
+			'weight': 'weight',
+		}
 

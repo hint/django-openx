@@ -35,5 +35,13 @@ class Advertiser(OpenXObject):
 		from campaign import Campaign
 		return Campaign.get_for_advertiser(self)
 	class Meta:
-		fields = ['accountId', 'advertiserId', 'advertiserName', 'agencyId', 'comments', 'contactName', 'emailAddress']
+		fields = {
+			'account_id': 'accountId',
+			'advertiser_id': 'advertiserId',
+			'advertiser_name': 'advertiserName',
+			'agency_id': 'agencyId',
+			'comments': 'comments',
+			'contact_name': 'contactName',
+			'email_address': 'emailAddress',
+		}
 
