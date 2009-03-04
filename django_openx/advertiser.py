@@ -1,9 +1,10 @@
-from client import OpenXClient
+from django_openx.client import OpenXClient
+from django_openx.data import OpenXObject
 
 _client = OpenXClient().advertiser
 _cache = {}
 
-class Advertiser(dict):
+class Advertiser(OpenXObject):
 	def add(self):
 		self['advertiserId'] = _client.addAdvertiser(dict(self))
 	def delete(self):
@@ -33,3 +34,6 @@ class Advertiser(dict):
 	def campaigns(self):
 		from campaign import Campaign
 		return Campaign.get_for_advertiser(self)
+	class Meta:
+		fields = ['accountId', 'advertiserId', 'advertiserName', 'agencyId', 'comments', 'contactName', 'emailAddress']
+

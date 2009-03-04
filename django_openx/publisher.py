@@ -1,9 +1,10 @@
-from client import OpenXClient
+from django_openx.client import OpenXClient
+from django_openx.data import OpenXObject
 
 _client = OpenXClient().publisher
 _cache = {}
 
-class Publisher(dict):
+class Publisher(OpenXObject):
 	def add(self):
 		self['publisherId'] = _client.addPublisher(dict(self))
 	def delete(self):
@@ -33,4 +34,6 @@ class Publisher(dict):
 	def zones(self):
 		from zone import Zone
 		return Zone.get_for_publisher(self)
+	class Meta:
+		fields = ['accountId', 'agencyId', 'comments', 'contactName', 'emailAddress', 'publisherId', 'publisherName']
 

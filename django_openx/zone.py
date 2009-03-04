@@ -1,9 +1,10 @@
-from client import OpenXClient
+from django_openx.client import OpenXClient
+from django_openx.data import OpenXObject
 
 _client = OpenXClient().zone
 _cache = {}
 
-class Zone(dict):
+class Zone(OpenXObject):
 	def add(self):
 		self['zoneId'] = _client.addZone(dict(self))
 	def delete(self):
@@ -57,3 +58,6 @@ class Zone(dict):
 		return _client.generateTags(self['zoneId'], code_type, params)
 	generate_tags = generate_tag
 	generateTags = generate_tag
+	class Meta:
+		fields = ['block', 'capping', 'comments', 'height', 'publisherId', 'sessionCapping', 'type', 'width', 'zoneId', 'zoneName']
+

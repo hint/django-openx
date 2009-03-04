@@ -1,5 +1,5 @@
 import xmlrpclib
-from services import SERVICES
+from django_openx.services import SERVICES
 from django.conf import settings
 
 class OpenXClient(object):

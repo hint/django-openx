@@ -1,9 +1,10 @@
-from client import OpenXClient
+from django_openx.client import OpenXClient
+from django_openx.data import OpenXObject
 
 _client = OpenXClient().campaign
 _cache = {}
 
-class Campaign(dict):
+class Campaign(OpenXObject):
 	def add(self):
 		self['campaignId'] = _client.addCampaign(dict(self))
 	def delete(self):
@@ -41,3 +42,8 @@ class Campaign(dict):
 			zone = Zone.get(zone)
 		return zone.unlink_campaign(self)
 	unlinkZone = unlink_zone
+	class Meta:
+		fields = ['advertiserId', 'block', 'campaignId', 'campaignName', 'capping', 'clicks', 'comments',
+			'endDate', 'impressions', 'priority', 'revenue', 'revenueType', 'sessionCapping', 'startDate',
+			'targetClicks', 'targetConversions', 'targetImpressions', 'weight']
+

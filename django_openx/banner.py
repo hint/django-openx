@@ -1,9 +1,10 @@
-from client import OpenXClient
+from django_openx.client import OpenXClient
+from django_openx.data import OpenXObject
 
 _client = OpenXClient().banner
 _cache = {}
 
-class Banner(dict):
+class Banner(OpenXObject):
 	def __init__(self, data={}, **kwargs):
 		data.update(kwargs)
 		if 'aImage' in data and not isinstance(data['aImage'], dict):
@@ -66,3 +67,8 @@ class Banner(dict):
 		content = fh.read()
 		fh.close()
 		self.set_image_raw(basename, content, editswf)
+	class Meta:
+		fields = ['aBackupImage', 'adserver', 'aImage', 'bannerId', 'bannerName', 'bannerText', 'block', 'campaignId', 'capping',
+			'comments', 'height', 'htmlTemplate', 'imageURL', 'sessionCapping', 'status', 'storageType', 'target', 'transparent',
+			'url', 'weight', 'width']
+

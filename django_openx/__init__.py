@@ -1,8 +1,8 @@
-from advertiser import Advertiser
-from agency import Agency
-from banner import Banner
-from campaign import Campaign
-from publisher import Publisher
-from zone import Zone
+from django_openx.advertiser import Advertiser
+from django_openx.agency import Agency
+from django_openx.banner import Banner
+from django_openx.campaign import Campaign
+from django_openx.publisher import Publisher
+from django_openx.zone import Zone
 
-from client import OpenXClient
+from django_openx.client import OpenXClient
