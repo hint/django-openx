@@ -2,14 +2,14 @@
 from django.db.models.fields import PositiveIntegerField
 from django.utils.translation import ugettext_lazy as _
 
-class OpenXFieldBase(PositiveIntegerField):
+class OpenXField(PositiveIntegerField):
 	def __init__(self, *args, **kwargs):
 		kwargs['blank'] = kwargs.get('null', True)
 		kwargs['blank'] = kwargs.get('blank', True)
-		super(OpenXFieldBase, self).__init__(*args, **kwargs)
+		super(OpenXField, self).__init__(*args, **kwargs)
 	
 	def contribute_to_class(self, cls, name):
-		super(OpenXFieldBase, self).contribute_to_class(cls, name)
+		super(OpenXField, self).contribute_to_class(cls, name)
 		setattr(cls, self.name, self)
 		#signals.post_save.connect(self._save, cls, True)
 	
@@ -57,21 +57,21 @@ class OpenXFieldBase(PositiveIntegerField):
 	
 	_openx_class = None
 
-class AdvertiserField(OpenXFieldBase):
+class AdvertiserField(OpenXField):
 	from django_openx import Advertiser as _openx_class
 
-class AgencyField(OpenXFieldBase):
+class AgencyField(OpenXField):
 	from django_openx import Agency as _openx_class
 
-class BannerField(OpenXFieldBase):
+class BannerField(OpenXField):
 	from django_openx import Banner as _openx_class
 
-class CampaignField(OpenXFieldBase):
+class CampaignField(OpenXField):
 	from django_openx import Campaign as _openx_class
 
-class PublisherField(OpenXFieldBase):
+class PublisherField(OpenXField):
 	from django_openx import Publisher as _openx_class
 
-class ZoneField(OpenXFieldBase):
+class ZoneField(OpenXField):
 	from django_openx import Zone as _openx_class
 
