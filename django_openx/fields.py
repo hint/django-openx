@@ -15,7 +15,7 @@ class OpenXFieldBase(PositiveIntegerField):
 	
 	def __get__(self, instance, owner=None):
 		if instance is None:
-			raise AttributeError(_('%s can only get on instances.') % self.name)
+			raise AttributeError(_('%s can only get value on instances.') % self.name)
 		obj = self._get_instance_cache(instance)
 		if isinstance(obj, (int, long)):
 			obj = self._openx_class.get(obj)
@@ -26,7 +26,7 @@ class OpenXFieldBase(PositiveIntegerField):
 		if instance is None:
 			raise AttributeError(_('%s can only be set on instances.') % self.name)
 		if not value is None and not isinstance(value, (self._openx_class, int, long)):
-			raise AttributeError(_('%s can only be set to right type.') % self.name)
+			raise AttributeError(_('%s can only be set to defined type.') % self.name)
 		self._set_instance_cache(instance, value)
 	
 	#def _save(self, **kwargs): #signal, sender, instance):
