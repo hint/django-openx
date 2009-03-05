@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class OpenXField(PositiveIntegerField):
 	def __init__(self, *args, **kwargs):
-		kwargs['blank'] = kwargs.get('null', True)
+		kwargs['null'] = kwargs.get('null', True)
 		kwargs['blank'] = kwargs.get('blank', True)
 		super(OpenXField, self).__init__(*args, **kwargs)
 	
