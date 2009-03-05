@@ -19,8 +19,8 @@ class OpenXObjectMeta(type):
 		return super(OpenXObjectMeta, cls).__new__(cls, name, bases, attrs)
 
 class OpenXObjectBase(object):
-	def __init__(self):
-		self._openx_data = {}
+	def __init__(self, data = {}):
+		self._openx_data = data
 	def __getitem__(self, name):
 		if name in self._openx_fields:
 			name = self._openx_fields[name]

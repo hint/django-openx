@@ -9,6 +9,7 @@ class Campaign(OpenXObject):
 		self['campaignId'] = _client.addCampaign(dict(self))
 	def delete(self):
 		_client.deleteCampaign(self['campaignId'])
+		self['campaignId'] = None
 	def modify(self):
 		_client.modifyCampaign(dict(self))
 	@staticmethod
@@ -44,6 +45,8 @@ class Campaign(OpenXObject):
 	unlinkZone = unlink_zone
 	class Meta:
 		fields = {
+			'id': 'campaignId',
+			'name': 'campaignName',
 			'advertiser_id': 'advertiserId',
 			'block': 'block',
 			'campaign_id': 'campaignId',

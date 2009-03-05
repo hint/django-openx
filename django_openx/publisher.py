@@ -9,6 +9,7 @@ class Publisher(OpenXObject):
 		self['publisherId'] = _client.addPublisher(dict(self))
 	def delete(self):
 		_client.deletePublisher(self['publisherId'])
+		self['publisherId'] = None
 	def modify(self):
 		_client.modifyPublisher(dict(self))
 	@staticmethod
@@ -36,6 +37,8 @@ class Publisher(OpenXObject):
 		return Zone.get_for_publisher(self)
 	class Meta:
 		fields = {
+			'id': 'publisherId',
+			'name': 'publisherName',
 			'account_id': 'accountId',
 			'agency_id': 'agencyId',
 			'comments': 'comments',

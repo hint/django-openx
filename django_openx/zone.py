@@ -9,6 +9,7 @@ class Zone(OpenXObject):
 		self['zoneId'] = _client.addZone(dict(self))
 	def delete(self):
 		_client.deleteZone(self['zoneId'])
+		self['zoneId'] = None
 	def modify(self):
 		_client.modifyZone(dict(self))
 	@staticmethod
@@ -60,6 +61,8 @@ class Zone(OpenXObject):
 	generateTags = generate_tag
 	class Meta:
 		fields = {
+			'id': 'zoneId',
+			'name': 'zoneName',
 			'block': 'block',
 			'capping': 'capping',
 			'comments': 'comments',

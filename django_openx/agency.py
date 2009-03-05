@@ -9,6 +9,7 @@ class Agency(OpenXObject):
 		self['agencyId'] = _client.addAgency(dict(self))
 	def delete(self):
 		_client.deleteAgency(self['agencyId'])
+		self['agencyId'] = None
 	def modify(self):
 		_client.modifyAgency(dict(self))
 	@staticmethod
@@ -26,6 +27,8 @@ class Agency(OpenXObject):
 		return Advertiser.get_for_agency(self)
 	class Meta:
 		fields = {
+			'id': 'agencyId',
+			'name': 'agencyName',
 			'account_id': 'accountId',
 			'agency_id': 'agencyId',
 			'agency_name': 'agencyName',

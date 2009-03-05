@@ -16,6 +16,7 @@ class Banner(OpenXObject):
 			del self['aImage']
 	def delete(self):
 		_client.deleteBanner(self['bannerId'])
+		self['bannerId'] = None
 	def modify(self):
 		_client.modifyBanner(dict(self))
 		if 'aImage' in self:
@@ -69,6 +70,9 @@ class Banner(OpenXObject):
 		self.set_image_raw(basename, content, editswf)
 	class Meta:
 		fields = {
+			'id': 'bannerId',
+			'name': 'bannerName',
+			'text': 'bannerText',
 			'a_backup_image': 'aBackupImage',
 			'adserver': 'adserver',
 			'a_image': 'aImage',
