@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class OpenXField(PositiveIntegerField):
 	def __init__(self, *args, **kwargs):
+		self._openx_autosave = kwargs.pop('autosave', True)
 		kwargs['null'] = kwargs.get('null', True)
 		kwargs['blank'] = kwargs.get('blank', True)
 		super(OpenXField, self).__init__(*args, **kwargs)
@@ -11,7 +12,7 @@ class OpenXField(PositiveIntegerField):
 	def contribute_to_class(self, cls, name):
 		super(OpenXField, self).contribute_to_class(cls, name)
 		setattr(cls, self.name, self)
-		#signals.post_save.connect(self._save, cls, True)
+		signals.post_save.connect(self._save, cls, True)
 	
 	def __get__(self, instance, owner=None):
 		if instance is None:
@@ -29,8 +30,13 @@ class OpenXField(PositiveIntegerField):
 			raise AttributeError(_('%s can only be set to defined type.') % self.name)
 		self._set_instance_cache(instance, value)
 	
-	#def _save(self, **kwargs): #signal, sender, instance):
-		#perhaps save advertiser back to openx
+	def _save(self, **kwargs): #signal, sender, instance):
+		if not self._openx_autosave:
+			return
+		instance = kwargs.get('instance', None)
+		obj = self._get_instance_cache(instance)
+		if isinstance(obj, self._openx_class):
+			obj.modify()
 	
 	def __delete__(self, instance):
 		self._set_instance_cache(instance, None)
