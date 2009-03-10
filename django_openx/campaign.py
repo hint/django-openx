@@ -1,28 +1,28 @@
 from django_openx.client import OpenXClient
 from django_openx.data import OpenXObject
 
-_client = OpenXClient().campaign
-_cache = {}
-
 class Campaign(OpenXObject):
+	_client = OpenXClient().campaign
+	_cache = {}
+	
 	def add(self):
-		self['campaignId'] = _client.addCampaign(dict(self))
+		self['campaignId'] = Campaign._client.addCampaign(self._openx_data)
 	def delete(self):
-		_client.deleteCampaign(self['campaignId'])
+		Campaign._client.deleteCampaign(self['campaignId'])
 		self['campaignId'] = None
 	def modify(self):
-		_client.modifyCampaign(dict(self))
+		Campaign._client.modifyCampaign(self._openx_data)
 	@staticmethod
 	def get(campaign_id):
-		if not campaign_id in _cache:
-			_cache[campaign_id] = Campaign(_client.getCampaign(campaign_id))
-		return _cache[campaign_id]
+		if not campaign_id in Campaign._cache:
+			Campaign._cache[campaign_id] = Campaign(Campaign._client.getCampaign(campaign_id))
+		return Campaign._cache[campaign_id]
 	@staticmethod
 	def get_for_advertiser(advertiser):
 		from advertiser import Advertiser
 		if isinstance(advertiser, Advertiser):
 			advertiser = advertiser['advertiserId']
-		campaigns = _client.getCampaignListByAdvertiserId(advertiser)
+		campaigns = Campaign._client.getCampaignListByAdvertiserId(advertiser)
 		if campaigns:
 			return [Campaign(d) for d in campaigns]
 		else:
@@ -65,5 +65,15 @@ class Campaign(OpenXObject):
 			'target_conversions': 'targetConversions',
 			'target_impressions': 'targetImpressions',
 			'weight': 'weight',
+		}
+		daily_statistics = {
+			'daily_statistics': 'campaignDailyStatistics',
+			'dailyStatistics': 'campaignDailyStatistics',
+			'banner_statistics': 'campaignBannerStatistics',
+			'bannerStatistics': 'campaignBannerStatistics',
+			'publisher_statistics': 'campaignPublisherStatistics',
+			'publisherStatistics': 'campaignPublisherStatistics',
+			'zone_statistics': 'campaignZoneStatistics',
+			'zoneStatistics': 'campaignZoneStatistics',
 		}
 

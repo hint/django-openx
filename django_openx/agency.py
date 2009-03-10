@@ -1,22 +1,22 @@
 from django_openx.client import OpenXClient
 from django_openx.data import OpenXObject
 
-_client = OpenXClient().agency
-_cache = {}
-
 class Agency(OpenXObject):
+	_client = OpenXClient().agency
+	_cache = {}
+	
 	def add(self):
-		self['agencyId'] = _client.addAgency(dict(self))
+		self['agencyId'] = Agency._client.addAgency(self._openx_data)
 	def delete(self):
-		_client.deleteAgency(self['agencyId'])
+		Agency._client.deleteAgency(self['agencyId'])
 		self['agencyId'] = None
 	def modify(self):
-		_client.modifyAgency(dict(self))
+		Agency._client.modifyAgency(self._openx_data)
 	@staticmethod
 	def get(agency_id):
-		if not agency_id in _cache:
-			_cache[agency_id] = Agency(_client.getAgency(agency_id))
-		return _cache[agency_id]
+		if not agency_id in Agency._cache:
+			Agency._cache[agency_id] = Agency(Agency._client.getAgency(agency_id))
+		return Agency._cache[agency_id]
 	@property
 	def publishers(self):
 		from publisher import Publisher
@@ -35,5 +35,19 @@ class Agency(OpenXObject):
 			'contact_name': 'contactName',
 			'email_address': 'emailAddress',
 			'password': 'password',
+		}
+		daily_statistics = {
+			'daily_statistics': 'foobarDailyStatistics',
+			'dailyStatistics': 'foobarDailyStatistics',
+			'advertiser_statistics': 'foobarAdvertiserStatistics',
+			'advertiserStatistics': 'foobarAdvertiserStatistics',
+			'campaign_statistics': 'foobarCampaignStatistics',
+			'campaignStatistics': 'foobarCampaignStatistics',
+			'banner_statistics': 'foobarBannerStatistics',
+			'bannerStatistics': 'foobarBannerStatistics',
+			'publisher_statistics': 'foobarPublisherStatistics',
+			'publisherStatistics': 'foobarPublisherStatistics',
+			'zone_statistics': 'foobarZoneStatistics',
+			'zoneStatistics': 'foobarZoneStatistics',
 		}
 

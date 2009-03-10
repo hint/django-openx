@@ -1,28 +1,28 @@
 from django_openx.client import OpenXClient
 from django_openx.data import OpenXObject
 
-_client = OpenXClient().zone
-_cache = {}
-
 class Zone(OpenXObject):
+	_client = OpenXClient().zone
+	_cache = {}
+	
 	def add(self):
-		self['zoneId'] = _client.addZone(dict(self))
+		self['zoneId'] = Zone._client.addZone(self._openx_data)
 	def delete(self):
-		_client.deleteZone(self['zoneId'])
+		Zone._client.deleteZone(self['zoneId'])
 		self['zoneId'] = None
 	def modify(self):
-		_client.modifyZone(dict(self))
+		Zone._client.modifyZone(self._openx_data)
 	@staticmethod
 	def get(zone_id):
-		if not zone_id in _cache:
-			_cache[zone_id] = Zone(_client.getZone(zone_id))
-		return _cache[zone_id]
+		if not zone_id in Zone._cache:
+			Zone._cache[zone_id] = Zone(Zone._client.getZone(zone_id))
+		return Zone._cache[zone_id]
 	@staticmethod
 	def get_for_publisher(publisher):
 		from publisher import Publisher
 		if isinstance(publisher, Publisher):
 			publisher = publisher['publisherId']
-		zones = _client.getZoneListByPublisherId(publisher)
+		zones = Zone._client.getZoneListByPublisherId(publisher)
 		if zones:
 			return [Zone(d) for d in zones]
 		else:
@@ -35,28 +35,28 @@ class Zone(OpenXObject):
 		from banner import Banner
 		if isinstance(banner, Banner):
 			banner = banner['bannerId']
-		_client.linkBanner(self['zoneId'], banner)
+		Zone._client.linkBanner(self['zoneId'], banner)
 	linkBanner = link_banner
 	def unlink_banner(self, banner):
 		from banner import Banner
 		if isinstance(banner, Banner):
 			banner = banner['bannerId']
-		_client.unlinkBanner(self['zoneId'], banner)
+		Zone._client.unlinkBanner(self['zoneId'], banner)
 	unlinkBanner = unlink_banner
 	def link_campaign(self, campaign):
 		from campaign import Campaign
 		if isinstance(campaign, Campaign):
 			campaign = campaign['campaignId']
-		_client.linkCampaign(self['zoneId'], campaign)
+		Zone._client.linkCampaign(self['zoneId'], campaign)
 	linkCampaign = link_campaign
 	def unlink_campaign(self, campaign):
 		from campaign import Campaign
 		if isinstance(campaign, Campaign):
 			campaign = campaign['campaignId']
-		_client.unlinkCampaign(self['zoneId'], campaign)
+		Zone._client.unlinkCampaign(self['zoneId'], campaign)
 	unlinkCampaign = unlink_campaign
 	def generate_tag(self, code_type='adjs', params=[]):
-		return _client.generateTags(self['zoneId'], code_type, params)
+		return Zone._client.generateTags(self['zoneId'], code_type, params)
 	generate_tags = generate_tag
 	generateTags = generate_tag
 	class Meta:
@@ -73,5 +73,15 @@ class Zone(OpenXObject):
 			'width': 'width',
 			'zone_id': 'zoneId',
 			'zone_name': 'zoneName',
+		}
+		daily_statistics = {
+			'daily_statistics': 'zoneDailyStatistics',
+			'dailyStatistics': 'zoneDailyStatistics',
+			'advertiser_statistics': 'zoneAdvertiserStatistics',
+			'advertiserStatistics': 'zoneAdvertiserStatistics',
+			'campaign_statistics': 'zoneCampaignStatistics',
+			'campaignStatistics': 'zoneCampaignStatistics',
+			'banner_statistics': 'zoneBannerStatistics',
+			'bannerStatistics': 'zoneBannerStatistics',
 		}
 

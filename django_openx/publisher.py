@@ -1,28 +1,28 @@
 from django_openx.client import OpenXClient
 from django_openx.data import OpenXObject
 
-_client = OpenXClient().publisher
-_cache = {}
-
 class Publisher(OpenXObject):
+	_client = OpenXClient().publisher
+	_cache = {}
+	
 	def add(self):
-		self['publisherId'] = _client.addPublisher(dict(self))
+		self['publisherId'] = Publisher._client.addPublisher(self._openx_data)
 	def delete(self):
-		_client.deletePublisher(self['publisherId'])
+		Publisher._client.deletePublisher(self['publisherId'])
 		self['publisherId'] = None
 	def modify(self):
-		_client.modifyPublisher(dict(self))
+		Publisher._client.modifyPublisher(self._openx_data)
 	@staticmethod
 	def get(publisher_id):
-		if not publisher_id in _cache:
-			_cache[publisher_id] = Publisher(_client.getPublisher(publisher_id))
-		return _cache[publisher_id]
+		if not publisher_id in Publisher._cache:
+			Publisher._cache[publisher_id] = Publisher(Publisher._client.getPublisher(publisher_id))
+		return Publisher._cache[publisher_id]
 	@staticmethod
 	def get_for_agency(agency):
 		from agency import Agency
 		if isinstance(agency, Agency):
 			agency = agency['agencyId']
-		publishers = _client.getPublisherListByAgencyId(agency)
+		publishers = Publisher._client.getPublisherListByAgencyId(agency)
 		if publishers:
 			return [Publisher(d) for d in publishers]
 		else:
@@ -46,5 +46,17 @@ class Publisher(OpenXObject):
 			'email_address': 'emailAddress',
 			'publisher_id': 'publisherId',
 			'publisher_name': 'publisherName',
+		}
+		daily_statistics = {
+			'daily_statistics': 'publisherDailyStatistics',
+			'dailyStatistics': 'publisherDailyStatistics',
+			'advertiser_statistics': 'publisherAdvertiserStatistics',
+			'advertiserStatistics': 'publisherAdvertiserStatistics',
+			'campaign_statistics': 'publisherCampaignStatistics',
+			'campaignStatistics': 'publisherCampaignStatistics',
+			'banner_statistics': 'publisherBannerStatistics',
+			'bannerStatistics': 'publisherBannerStatistics',
+			'zone_statistics': 'publisherZoneStatistics',
+			'zoneStatistics': 'publisherZoneStatistics',
 		}
 

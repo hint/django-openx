@@ -1,37 +1,37 @@
 from django_openx.client import OpenXClient
 from django_openx.data import OpenXObject
 
-_client = OpenXClient().banner
-_cache = {}
-
 class Banner(OpenXObject):
+	_client = OpenXClient().banner
+	_cache = {}
+	
 	def __init__(self, data={}, **kwargs):
 		data.update(kwargs)
 		if 'aImage' in data and not isinstance(data['aImage'], dict):
 			del data['aImage']
 		super(Banner, self).__init__(data)
 	def add(self):
-		self['bannerId'] = _client.addBanner(dict(self))
+		self['bannerId'] = Banner._client.addBanner(self._openx_data)
 		if 'aImage' in self:
 			del self['aImage']
 	def delete(self):
-		_client.deleteBanner(self['bannerId'])
+		Banner._client.deleteBanner(self['bannerId'])
 		self['bannerId'] = None
 	def modify(self):
-		_client.modifyBanner(dict(self))
+		Banner._client.modifyBanner(self._openx_data)
 		if 'aImage' in self:
 			del self['aImage']
 	@staticmethod
 	def get(banner_id):
-		if not banner_id in _cache:
-			_cache[banner_id] = Banner(_client.getBanner(banner_id))
-		return _cache[banner_id]
+		if not banner_id in Banner._cache:
+			Banner._cache[banner_id] = Banner(Banner._client.getBanner(banner_id))
+		return Banner._cache[banner_id]
 	@staticmethod
 	def get_for_campaign(campaign):
 		from campaign import Campaign
 		if isinstance(campaign, Campaign):
 			campaign = campaign['campaignId']
-		banners = _client.getBannerListByCampaignId(campaign)
+		banners = Banner._client.getBannerListByCampaignId(campaign)
 		if banners:
 			return [Banner(d) for d in banners]
 		else:
@@ -68,6 +68,11 @@ class Banner(OpenXObject):
 		content = fh.read()
 		fh.close()
 		self.set_image_raw(basename, content, editswf)
+	def get_targeting(self):
+		return Banner._client.getBannerTargeting(self.id)
+	def set_targeting(self, targeting):
+		# TODO: Validate value and test method
+		return Banner._client.setBannerTargeting(self.id)
 	class Meta:
 		fields = {
 			'id': 'bannerId',
@@ -94,5 +99,13 @@ class Banner(OpenXObject):
 			'url': 'url',
 			'weight': 'weight',
 			'width': 'width',
+		}
+		daily_statistics = {
+			'daily_statistics': 'bannerDailyStatistics',
+			'dailyStatistics': 'bannerDailyStatistics',
+			'publisher_statistics': 'bannerPublisherStatistics',
+			'publisherStatistics': 'bannerPublisherStatistics',
+			'zone_statistics': 'bannerZoneStatistics',
+			'zoneStatistics': 'bannerZoneStatistics',
 		}
 

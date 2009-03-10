@@ -1,9 +1,20 @@
+from datetime import date, timedelta
+
 def object_property(field_key):
 	def setter(self, value):
 		self._openx_data[field_key] = value
 	def getter(self):
 		return self._openx_data.get(field_key, None)
 	return property(getter, setter)
+
+def object_daily_statistics(call):
+	def _return_daily_statistics(self, start=None, end=None):
+		if start is None:
+			start = date.today()
+		if end is None:
+			end = start
+		return getattr(self.__class__._client, call)(self.id, start, end)
+	return _return_daily_statistics
 
 class OpenXObjectMeta(type):
 	def __new__(cls, name, bases, attrs):
@@ -15,6 +26,11 @@ class OpenXObjectMeta(type):
 				attrs[key] = object_property(name)
 				attrs[name] = object_property(name)
 			attrs['_openx_fields'] = fields
+			
+			daily_statistics = getattr(meta, 'daily_statistics', {})
+			for key, name in daily_statistics.items():
+				attrs[key] = object_daily_statistics(name)
+			attrs['_openx_daily_statistics'] = fields
 		
 		return super(OpenXObjectMeta, cls).__new__(cls, name, bases, attrs)
 
