@@ -6,16 +6,16 @@ class Agency(OpenXObject):
 	_cache = {}
 	
 	def add(self):
-		self['agencyId'] = Agency._client.addAgency(self._openx_data)
+		self['agencyId'] = Agency._client.ox.addAgency(self._openx_data)
 	def delete(self):
-		Agency._client.deleteAgency(self['agencyId'])
+		Agency._client.ox.deleteAgency(self['agencyId'])
 		self['agencyId'] = None
 	def modify(self):
-		Agency._client.modifyAgency(self._openx_data)
+		Agency._client.ox.modifyAgency(self._openx_data)
 	@staticmethod
 	def get(agency_id):
 		if not agency_id in Agency._cache:
-			Agency._cache[agency_id] = Agency(Agency._client.getAgency(agency_id))
+			Agency._cache[agency_id] = Agency(Agency._client.ox.getAgency(agency_id))
 		return Agency._cache[agency_id]
 	@property
 	def publishers(self):

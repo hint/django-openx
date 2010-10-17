@@ -6,23 +6,23 @@ class Publisher(OpenXObject):
 	_cache = {}
 	
 	def add(self):
-		self['publisherId'] = Publisher._client.addPublisher(self._openx_data)
+		self['publisherId'] = Publisher._client.ox.addPublisher(self._openx_data)
 	def delete(self):
-		Publisher._client.deletePublisher(self['publisherId'])
+		Publisher._client.ox.deletePublisher(self['publisherId'])
 		self['publisherId'] = None
 	def modify(self):
-		Publisher._client.modifyPublisher(self._openx_data)
+		Publisher._client.ox.modifyPublisher(self._openx_data)
 	@staticmethod
 	def get(publisher_id):
 		if not publisher_id in Publisher._cache:
-			Publisher._cache[publisher_id] = Publisher(Publisher._client.getPublisher(publisher_id))
+			Publisher._cache[publisher_id] = Publisher(Publisher._client.ox.getPublisher(publisher_id))
 		return Publisher._cache[publisher_id]
 	@staticmethod
 	def get_for_agency(agency):
 		from agency import Agency
 		if isinstance(agency, Agency):
 			agency = agency['agencyId']
-		publishers = Publisher._client.getPublisherListByAgencyId(agency)
+		publishers = Publisher._client.ox.getPublisherListByAgencyId(agency)
 		if publishers:
 			return [Publisher(d) for d in publishers]
 		else:

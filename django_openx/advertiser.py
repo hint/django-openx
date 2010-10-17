@@ -6,23 +6,23 @@ class Advertiser(OpenXObject):
 	_cache = {}
 	
 	def add(self):
-		self['advertiserId'] = Advertiser._client.addAdvertiser(self._openx_data)
+		self['advertiserId'] = Advertiser._client.ox.addAdvertiser(self._openx_data)
 	def delete(self):
-		Advertiser._client.deleteAdvertiser(self['advertiserId'])
+		Advertiser._client.ox.deleteAdvertiser(self['advertiserId'])
 		self['advertiserId'] = None
 	def modify(self):
-		self._client.modifyAdvertiser(self._openx_data)
+		self._client.ox.modifyAdvertiser(self._openx_data)
 	@staticmethod
 	def get(advertiser_id):
 		if not advertiser_id in Advertiser._cache:
-			Advertiser._cache[advertiser_id] = Advertiser(Advertiser._client.getAdvertiser(advertiser_id))
+			Advertiser._cache[advertiser_id] = Advertiser(Advertiser._client.ox.getAdvertiser(advertiser_id))
 		return Advertiser._cache[advertiser_id]
 	@staticmethod
 	def get_for_agency(agency):
 		from agency import Agency
 		if isinstance(agency, Agency):
 			agency = agency['agencyId']
-		advertisers = Advertiser._client.getAdvertiserListByAgencyId(agency)
+		advertisers = Advertiser._client.ox.getAdvertiserListByAgencyId(agency)
 		if advertisers:
 			return [Advertiser(d) for d in advertisers]
 		else:

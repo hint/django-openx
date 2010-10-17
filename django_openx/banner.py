@@ -11,27 +11,27 @@ class Banner(OpenXObject):
 			del data['aImage']
 		super(Banner, self).__init__(data)
 	def add(self):
-		self['bannerId'] = Banner._client.addBanner(self._openx_data)
+		self['bannerId'] = Banner._client.ox.addBanner(self._openx_data)
 		if 'aImage' in self:
 			del self['aImage']
 	def delete(self):
-		Banner._client.deleteBanner(self['bannerId'])
+		Banner._client.ox.deleteBanner(self['bannerId'])
 		self['bannerId'] = None
 	def modify(self):
-		Banner._client.modifyBanner(self._openx_data)
+		Banner._client.ox.modifyBanner(self._openx_data)
 		if 'aImage' in self:
 			del self['aImage']
 	@staticmethod
 	def get(banner_id):
 		if not banner_id in Banner._cache:
-			Banner._cache[banner_id] = Banner(Banner._client.getBanner(banner_id))
+			Banner._cache[banner_id] = Banner(Banner._client.ox.getBanner(banner_id))
 		return Banner._cache[banner_id]
 	@staticmethod
 	def get_for_campaign(campaign):
 		from campaign import Campaign
 		if isinstance(campaign, Campaign):
 			campaign = campaign['campaignId']
-		banners = Banner._client.getBannerListByCampaignId(campaign)
+		banners = Banner._client.ox.getBannerListByCampaignId(campaign)
 		if banners:
 			return [Banner(d) for d in banners]
 		else:
@@ -69,10 +69,10 @@ class Banner(OpenXObject):
 		fh.close()
 		self.set_image_raw(basename, content, editswf)
 	def get_targeting(self):
-		return Banner._client.getBannerTargeting(self.id)
+		return Banner._client.ox.getBannerTargeting(self.id)
 	def set_targeting(self, targeting):
 		# TODO: Validate value and test method
-		return Banner._client.setBannerTargeting(self.id)
+		return Banner._client.ox.setBannerTargeting(self.id)
 	class Meta:
 		fields = {
 			'id': 'bannerId',

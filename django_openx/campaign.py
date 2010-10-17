@@ -6,23 +6,23 @@ class Campaign(OpenXObject):
 	_cache = {}
 	
 	def add(self):
-		self['campaignId'] = Campaign._client.addCampaign(self._openx_data)
+		self['campaignId'] = Campaign._client.ox.addCampaign(self._openx_data)
 	def delete(self):
-		Campaign._client.deleteCampaign(self['campaignId'])
+		Campaign._client.ox.deleteCampaign(self['campaignId'])
 		self['campaignId'] = None
 	def modify(self):
-		Campaign._client.modifyCampaign(self._openx_data)
+		Campaign._client.ox.modifyCampaign(self._openx_data)
 	@staticmethod
 	def get(campaign_id):
 		if not campaign_id in Campaign._cache:
-			Campaign._cache[campaign_id] = Campaign(Campaign._client.getCampaign(campaign_id))
+			Campaign._cache[campaign_id] = Campaign(Campaign._client.ox.getCampaign(campaign_id))
 		return Campaign._cache[campaign_id]
 	@staticmethod
 	def get_for_advertiser(advertiser):
 		from advertiser import Advertiser
 		if isinstance(advertiser, Advertiser):
 			advertiser = advertiser['advertiserId']
-		campaigns = Campaign._client.getCampaignListByAdvertiserId(advertiser)
+		campaigns = Campaign._client.ox.getCampaignListByAdvertiserId(advertiser)
 		if campaigns:
 			return [Campaign(d) for d in campaigns]
 		else:
