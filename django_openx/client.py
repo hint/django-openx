@@ -7,12 +7,12 @@ class OpenXClient(object):
 	@property
 	def _session(self):
 		if self.__session is None:
-			s = xmlrpclib.ServerProxy(settings.OPENX_URL, verbose=True)
+			s = xmlrpclib.ServerProxy(settings.OPENX_URL)
 			self.__session = s.ox.logon(settings.OPENX_USERNAME, settings.OPENX_PASSWORD)
 		return self.__session
 	def _renew_session(self):
 		self.__session = None
-	def __getattr__(self):
+	def __getattr__(self, name):
 		return OpenXServiceClientWrapper(self)
 
 class OpenXServiceClientWrapper(object):
